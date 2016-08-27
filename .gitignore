@@ -6,3 +6,5 @@
 .settings/org.eclipse.jdt.core.prefs
 
 bin/IntegerArray.txt
+
+*.class

@@ -4,56 +4,53 @@ import java.io.FileReader;
 import java.io.IOException;
 
 class InversionCount {
-	static int ARRAY_SIZE = 10;
+	static int ARRAY_SIZE = 100000;
 	static int a[] = new int[ARRAY_SIZE];
 	static String inputFileName = "src/IntegerArray.txt";
 
 	public static void main(String args[]) {
 		readInput();
-		int ic = sortAndCount(0, ARRAY_SIZE);
-		System.out.println("Inversion Count is: " + ic);
+		System.out.println("Inversion Count is: " + sortAndCount(0, ARRAY_SIZE));
 	}
 
-	private static int sortAndCount(int s, int e) {
+	private static long sortAndCount(int s, int e) {
 		if (e - s <= 1) {
 			return 0;
 		}
 		int m = (s + e) / 2;
-		int x = sortAndCount(s, m);
-		int y = sortAndCount(m, e);
-		int z = countSplitInversion(s, e);
+		long x = sortAndCount(s, m);
+		long y = sortAndCount(m, e);
+		long z = countSplitInversion(s, e);
 		return x + y + z;
 	}
 
-	private static int countSplitInversion(int s, int e) {
-		int c = 0, i = 0, j = 0, n = e - s, m = (s + e) / 2;
-		int l[] = new int[n];
+	private static long countSplitInversion(int s, int e) {
+		long c = 0;
+		int i = 0, j = 0, n = e - s, m = (s + e) / 2;		
+		int d[] = new int[n];
 		for (int k = 0; k < n; k++) {
 			int bi = s + i, cj = m + j;
 			if (bi == m) {
-				l[k] = a[cj];
+				d[k] = a[cj];
 				j++;
 				continue;
 			}
 			if (cj == e) {
-				l[k] = a[bi];
+				d[k] = a[bi];
 				i++;
-				if (k + 1 < n) {
-					c++;
-				}
 				continue;
 			}
 			if (a[bi] > a[cj]) {
-				l[k] = a[cj];
-				c++;
+				d[k] = a[cj];
+				c += m - bi;
 				j++;
 			} else {
-				l[k] = a[bi];
+				d[k] = a[bi];
 				i++;
 			}
 		}
 		for (int k = 0; k < n; k++) {
-			a[s + k] = l[k];
+			a[s + k] = d[k];
 		}
 		return c;
 	}
