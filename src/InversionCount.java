@@ -4,16 +4,17 @@ import java.io.FileReader;
 import java.io.IOException;
 
 class InversionCount {
-	static int ARRAY_SIZE = 100000;
+	static int ARRAY_SIZE = 10;
 	static int a[] = new int[ARRAY_SIZE];
 	static String inputFileName = "src/IntegerArray.txt";
 
 	public static void main(String args[]) {
 		readInput();
-		System.out.println("Inversion Count is: " + sortAndCount(0, ARRAY_SIZE));
+		System.out.println("Inversion Count is: " + sortAndCount(0, ARRAY_SIZE) + " for ARRAY_SIZE " + ARRAY_SIZE);
 	}
 
 	private static long sortAndCount(int s, int e) {
+		System.out.println("s:" + s + ", e:" + e);
 		if (e - s <= 1) {
 			return 0;
 		}
