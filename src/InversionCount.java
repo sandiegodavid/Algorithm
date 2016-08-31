@@ -4,9 +4,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 class InversionCount {
-	static int ARRAY_SIZE = 10;
+	static int ARRAY_SIZE = 100000;
 	static int a[] = new int[ARRAY_SIZE];
-	static String inputFileName = "src/IntegerArray.txt";
+	static String inputFileName = "resources/IntegerArray.txt";
 
 	public static void main(String args[]) {
 		readInput();
@@ -14,7 +14,7 @@ class InversionCount {
 	}
 
 	private static long sortAndCount(int s, int e) {
-		System.out.println("s:" + s + ", e:" + e);
+		//System.out.println("s:" + s + ", e:" + e);
 		if (e - s <= 1) {
 			return 0;
 		}
