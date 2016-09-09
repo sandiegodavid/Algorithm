@@ -11,17 +11,17 @@ public class QuickSort {
 
 	public static void main(String args[]) {
 		readInput();
-		partitionByFirst(0, ARRAY_SIZE);
-		System.out.println("partitionByFirst comparisonCount: " + comparisonCount);
+		pivotByFirst(0, ARRAY_SIZE);
+		System.out.println("pivotByFirst comparisonCount: " + comparisonCount);
 		readInput();
-		partitionByLast(0, ARRAY_SIZE);
-		System.out.println("partitionByLast comparisonCount: " + comparisonCount);
+		pivotByLast(0, ARRAY_SIZE);
+		System.out.println("pivotByLast comparisonCount: " + comparisonCount);
 		readInput();
-		partitionByMedianOfThree(0, ARRAY_SIZE);
-		System.out.println("partitionByMedianOfThree comparisonCount: " + comparisonCount);
+		pivotByMedianOfThree(0, ARRAY_SIZE);
+		System.out.println("pivotByMedianOfThree comparisonCount: " + comparisonCount);
 	}
 
-	private static void partitionByFirst(int l, int r) {
+	private static void pivotByFirst(int l, int r) {
 		if (r - l < 2) {
 			return;
 		}
@@ -44,11 +44,11 @@ public class QuickSort {
 		}
 		a[l] = a[i - 1];
 		a[i - 1] = p;
-		partitionByFirst(l, i - 1);
-		partitionByFirst(i, r);
+		pivotByFirst(l, i - 1);
+		pivotByFirst(i, r);
 	}
 
-	private static void partitionByLast(int l, int r) {
+	private static void pivotByLast(int l, int r) {
 		if (r - l < 2) {
 			return;
 		}
@@ -72,11 +72,11 @@ public class QuickSort {
 		}
 		a[l] = a[i - 1];
 		a[i - 1] = p;
-		partitionByLast(l, i - 1);
-		partitionByLast(i, r);
+		pivotByLast(l, i - 1);
+		pivotByLast(i, r);
 	}
 
-	private static void partitionByMedianOfThree(int l, int r) {
+	private static void pivotByMedianOfThree(int l, int r) {
 		if (r - l < 2) {
 			return;
 		}
@@ -101,8 +101,8 @@ public class QuickSort {
 		}
 		a[l] = a[i - 1];
 		a[i - 1] = p;
-		partitionByMedianOfThree(l, i - 1);
-		partitionByMedianOfThree(i, r);
+		pivotByMedianOfThree(l, i - 1);
+		pivotByMedianOfThree(i, r);
 	}
 
 	private static int chooseMedian(int l, int r) {
