@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.function.BinaryOperator;
 
 public class QuickSort {
 	static int ARRAY_SIZE = 10000;
@@ -10,18 +11,37 @@ public class QuickSort {
 	static int comparisonCount = 0;
 
 	public static void main(String args[]) {
-		readInput();
-		pivotByFirst(0, ARRAY_SIZE);
-		System.out.println("pivotByFirst comparisonCount: " + comparisonCount);
-		readInput();
-		pivotByLast(0, ARRAY_SIZE);
-		System.out.println("pivotByLast comparisonCount: " + comparisonCount);
-		readInput();
-		pivotByMedianOfThree(0, ARRAY_SIZE);
-		System.out.println("pivotByMedianOfThree comparisonCount: " + comparisonCount);
+		BinaryOperator<Integer> pivotByFirst = (l, r) -> a[l];
+		qs(pivotByFirst, "pivotByFirst");
+		BinaryOperator<Integer> pivotByLast = (l, r) -> {
+			int p = a[r - 1];
+			a[r - 1] = a[l];
+			return p;
+		};
+		qs(pivotByLast, "pivotByLast");
+		BinaryOperator<Integer> pivotByMedianOfThree = (l, r) -> {
+			int pi = chooseMedian(l, r - 1);
+			int p = a[pi];
+			a[pi] = a[l];
+			return p;
+		};
+		qs(pivotByMedianOfThree, "pivotByMedianOfThree");
+		BinaryOperator<Integer> pivotByRandom = (l, r) -> {
+			int pi = l + (int) (Math.random() * (r - l));
+			int p = a[pi];
+			a[pi] = a[l];
+			return p;
+		};
+		qs(pivotByRandom, "pivotByRandom");
 	}
 
-	private static void pivotByFirst(int l, int r) {
+	private static void qs(BinaryOperator<Integer> pivotGetter, String pivotGetterName) {
+		readInput();
+		qsPartition(0, ARRAY_SIZE, pivotGetter);
+		System.out.println(pivotGetterName + " comparisonCount: " + comparisonCount);
+	}
+
+	private static void qsPartition(int l, int r, BinaryOperator<Integer> pivotGetter) {
 		if (r - l < 2) {
 			return;
 		}
@@ -34,7 +54,7 @@ public class QuickSort {
 		}
 
 		comparisonCount += r - 1 - l;
-		int p = a[l];
+		int p = pivotGetter.apply(l, r);
 		int i = l + 1;
 		for (int j = l + 1; j < r; j++) {
 			if (a[j] < p) {
@@ -44,65 +64,8 @@ public class QuickSort {
 		}
 		a[l] = a[i - 1];
 		a[i - 1] = p;
-		pivotByFirst(l, i - 1);
-		pivotByFirst(i, r);
-	}
-
-	private static void pivotByLast(int l, int r) {
-		if (r - l < 2) {
-			return;
-		}
-		if (r - l == 2) {
-			comparisonCount++;
-			if (a[l] > a[l + 1]) {
-				swap(l, l + 1);
-			}
-			return;
-		}
-
-		comparisonCount += r - 1 - l;
-		int p = a[r - 1];
-		a[r - 1] = a[l];
-		int i = l + 1;
-		for (int j = l + 1; j < r; j++) {
-			if (a[j] < p) {
-				swap(i, j);
-				i++;
-			}
-		}
-		a[l] = a[i - 1];
-		a[i - 1] = p;
-		pivotByLast(l, i - 1);
-		pivotByLast(i, r);
-	}
-
-	private static void pivotByMedianOfThree(int l, int r) {
-		if (r - l < 2) {
-			return;
-		}
-		if (r - l == 2) {
-			comparisonCount++;
-			if (a[l] > a[l + 1]) {
-				swap(l, l + 1);
-			}
-			return;
-		}
-
-		comparisonCount += r - 1 - l;
-		int pi = chooseMedian(l, r - 1);
-		int p = a[pi];
-		a[pi] = a[l];
-		int i = l + 1;
-		for (int j = l + 1; j < r; j++) {
-			if (a[j] < p) {
-				swap(i, j);
-				i++;
-			}
-		}
-		a[l] = a[i - 1];
-		a[i - 1] = p;
-		pivotByMedianOfThree(l, i - 1);
-		pivotByMedianOfThree(i, r);
+		qsPartition(l, i - 1, pivotGetter);
+		qsPartition(i, r, pivotGetter);
 	}
 
 	private static int chooseMedian(int l, int r) {
