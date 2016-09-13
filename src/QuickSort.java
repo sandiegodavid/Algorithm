@@ -12,30 +12,30 @@ public class QuickSort {
 
 	public static void main(String args[]) {
 		BinaryOperator<Integer> pivotByFirst = (l, r) -> a[l];
-		qs(pivotByFirst, "pivotByFirst");
+		quickSort(pivotByFirst, "pivotByFirst");
 		BinaryOperator<Integer> pivotByLast = (l, r) -> {
 			int p = a[r - 1];
 			a[r - 1] = a[l];
 			return p;
 		};
-		qs(pivotByLast, "pivotByLast");
+		quickSort(pivotByLast, "pivotByLast");
 		BinaryOperator<Integer> pivotByMedianOfThree = (l, r) -> {
 			int pi = chooseMedian(l, r - 1);
 			int p = a[pi];
 			a[pi] = a[l];
 			return p;
 		};
-		qs(pivotByMedianOfThree, "pivotByMedianOfThree");
+		quickSort(pivotByMedianOfThree, "pivotByMedianOfThree");
 		BinaryOperator<Integer> pivotByRandom = (l, r) -> {
 			int pi = l + (int) (Math.random() * (r - l));
 			int p = a[pi];
 			a[pi] = a[l];
 			return p;
 		};
-		qs(pivotByRandom, "pivotByRandom");
+		quickSort(pivotByRandom, "pivotByRandom");
 	}
 
-	private static void qs(BinaryOperator<Integer> pivotGetter, String pivotGetterName) {
+	private static void quickSort(BinaryOperator<Integer> pivotGetter, String pivotGetterName) {
 		readInput();
 		qsPartition(0, ARRAY_SIZE, pivotGetter);
 		System.out.println(pivotGetterName + " comparisonCount: " + comparisonCount);
