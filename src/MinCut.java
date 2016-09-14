@@ -33,7 +33,7 @@ public class MinCut {
 	public static void main(String args[]) throws FileNotFoundException, IOException {
 		int minCut = VERTEX_COUNT * (VERTEX_COUNT - 1);
 		int loopCnt = (int) (VERTEX_COUNT * VERTEX_COUNT * Math.log(VERTEX_COUNT));
-		loopCnt = 2;
+		loopCnt = 20;
 		for (int i = 0; i < loopCnt; i++) {
 			readInput();
 			int myMinCut = minCut();
@@ -64,7 +64,7 @@ public class MinCut {
 			if (graph[i][0] != 0) {
 				for (int j = 1; j < graph[i].length; j++) {
 					if (edgeToCollapse == 0) {
-						collapse(i, j);
+						collapse(i, graph[i][j] - 1);
 						return;
 					}
 					edgeToCollapse--;
@@ -125,6 +125,7 @@ public class MinCut {
 				e++;
 			}
 		}
+		graph[newVertex] = collapsedEdges;
 
 		// mark collapsed vertex as 0
 		graph[collapsedVertex][0] = 0;
