@@ -39,9 +39,21 @@ public class SCC {
 	 * and environment, and we strongly suggest that you exchange tips for doing
 	 * this on the discussion forums.
 	 */
-	static final int VERTICES_COUNT = 875714;
+
+	/*
+	 * In Eclipse, increase stack size before running this
+	 * http://stackoverflow.com/a/2127262
+	 * 
+	 * Open the Run Configuration for your application (Run/Run
+	 * Configurations..., then look for the applications entry in 'Java
+	 * application').
+	 * 
+	 * The arguments tab has a text box Vm arguments, enter -Xss128m (or a bigger
+	 * parameter). The default value is 512 kByte.
+	 */
+	static final int VERTICES_COUNT = 875714;// 12; for SCC-small.txt
 	static final int LARGESTS_COUNT = 5;
-	static String inputFileName = "resources/SCC-small.txt";
+	static String inputFileName = "resources/SCC.txt";// SCC-small.txt
 
 	static Map<Integer, List<Integer>> g = new HashMap<>(VERTICES_COUNT);
 	static Map<Integer, List<Integer>> gReverse = new HashMap<>(VERTICES_COUNT);
