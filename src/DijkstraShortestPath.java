@@ -1,17 +1,28 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DijkstraShortestPath {
 	/*
 	 * Dijkstra's shortest-path algorithm.
 	 * 
-	 * The file contains an adjacency list representation of an
-	 * undirected weighted graph with 200 vertices labeled 1 to 200. Each row
-	 * consists of the node tuples that are adjacent to that particular vertex
-	 * along with the length of that edge. For example, the 6th row has 6 as the
-	 * first entry indicating that this row corresponds to the vertex labeled 6.
-	 * The next entry of this row "141,8200" indicates that there is an edge
-	 * between vertex 6 and vertex 141 that has length 8200. The rest of the
-	 * pairs of this row indicate the other vertices adjacent to vertex 6 and
-	 * the lengths of the corresponding edges.
+	 * The file contains an adjacency list representation of an undirected
+	 * weighted graph with 200 vertices labeled 1 to 200. Each row consists of
+	 * the node tuples that are adjacent to that particular vertex along with
+	 * the length of that edge. For example, the 6th row has 6 as the first
+	 * entry indicating that this row corresponds to the vertex labeled 6. The
+	 * next entry of this row "141,8200" indicates that there is an edge between
+	 * vertex 6 and vertex 141 that has length 8200. The rest of the pairs of
+	 * this row indicate the other vertices adjacent to vertex 6 and the lengths
+	 * of the corresponding edges.
 	 * 
 	 * Your task is to run Dijkstra's shortest-path algorithm on this graph,
 	 * using 1 (the first vertex) as the source vertex, and to compute the
@@ -37,7 +48,53 @@ public class DijkstraShortestPath {
 	 * mapping between vertices and their positions in the heap.
 	 * 
 	 */
-	public static void main(String[] args) {
-		
+	static String inputFileName = "resources/dijkstraData.txt";
+	static final int VERTEX_COUNT = 200;
+	static Map<Integer, List<AdjNode>> adjList = new HashMap<>(VERTEX_COUNT);
+	static final int MAX_DISTANCE = 1000000;
+	static Integer query[] = new Integer[] { 7, 37, 59, 82, 99, 115, 133, 165, 188, 197 };
+	static int distances[] = new int[VERTEX_COUNT - 1];
+
+	public static void main(String[] args) throws FileNotFoundException, IOException {
+		readInput();
+		dijkstra();
+		System.out.println(Stream.of(query).map(q -> distances[q - 1]).collect(Collectors.toList()));
+	}
+
+	private static void dijkstra() {
+
+	}
+
+	private static void readInput() throws FileNotFoundException, IOException {
+		try (BufferedReader reader = new BufferedReader(new FileReader(inputFileName))) {
+			String is;
+			while ((is = reader.readLine()) != null) {
+				String adjs[] = is.split("\\s");
+				List<AdjNode> adjl = new ArrayList<>(adjs.length - 1);
+				int vertex = Integer.valueOf(adjs[0]);
+				adjList.put(vertex, adjl);
+				if (adjs.length > 0) {
+					Stream.of(adjs).forEach(s -> {
+						AdjNode adj = new AdjNode(s);
+						if (adj.adjVertex != 0) {
+							adjl.add(adj);
+						}
+					});
+				}
+			}
+		}
+	}
+
+	static class AdjNode {
+		int adjVertex;
+		int edgeLength;
+
+		AdjNode(String adjs) {
+			String[] parts = adjs.split(",");
+			if (parts.length == 2) {
+				adjVertex = Integer.valueOf(parts[0]);
+				edgeLength = Integer.valueOf(parts[1]);
+			}
+		}
 	}
 }
