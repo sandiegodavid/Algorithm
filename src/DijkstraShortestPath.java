@@ -3,10 +3,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,19 +50,37 @@ public class DijkstraShortestPath {
 	 */
 	static String inputFileName = "resources/dijkstraData.txt";
 	static final int VERTEX_COUNT = 200;
-	static Map<Integer, List<AdjNode>> adjList = new HashMap<>(VERTEX_COUNT);
+	static Map<Integer, List<AdjVertex>> adjList = new HashMap<>(VERTEX_COUNT);
+	static PriorityQueue<Map.Entry<Integer, Integer>> heap = new PriorityQueue<>(VERTEX_COUNT,
+			(Map.Entry.comparingByKey()));
+	static Map<Integer, Integer> processed = new HashMap<>();
 	static final int MAX_DISTANCE = 1000000;
 	static Integer query[] = new Integer[] { 7, 37, 59, 82, 99, 115, 133, 165, 188, 197 };
-	static int distances[] = new int[VERTEX_COUNT - 1];
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		readInput();
 		dijkstra();
-		System.out.println(Stream.of(query).map(q -> distances[q - 1]).collect(Collectors.toList()));
+		System.out.println(Stream.of(query).map(q -> processed.get(q)).collect(Collectors.toList()));
 	}
 
 	private static void dijkstra() {
-
+		processed.put(1, 0);
+		while (processed.size() < VERTEX_COUNT) {
+			int nextV = 0;
+			int shortestDis = MAX_DISTANCE;
+			for (Map.Entry<Integer, Integer> p : processed.entrySet()) {
+				for (AdjVertex adj : adjList.get(p.getKey())) {
+					if (processed.get(adj.head) == null) {
+						int greedyScore = p.getValue() + adj.edgeLength;
+						if (greedyScore < shortestDis) {
+							nextV = adj.head;
+							shortestDis = greedyScore;
+						}
+					}
+				}
+			}
+			processed.put(nextV, shortestDis);
+		}
 	}
 
 	private static void readInput() throws FileNotFoundException, IOException {
@@ -70,13 +88,13 @@ public class DijkstraShortestPath {
 			String is;
 			while ((is = reader.readLine()) != null) {
 				String adjs[] = is.split("\\s");
-				List<AdjNode> adjl = new ArrayList<>(adjs.length - 1);
+				List<AdjVertex> adjl = new ArrayList<>(adjs.length - 1);
 				int vertex = Integer.valueOf(adjs[0]);
 				adjList.put(vertex, adjl);
 				if (adjs.length > 0) {
 					Stream.of(adjs).forEach(s -> {
-						AdjNode adj = new AdjNode(s);
-						if (adj.adjVertex != 0) {
+						AdjVertex adj = new AdjVertex(s);
+						if (adj.head != 0) {
 							adjl.add(adj);
 						}
 					});
@@ -85,14 +103,14 @@ public class DijkstraShortestPath {
 		}
 	}
 
-	static class AdjNode {
-		int adjVertex;
+	static class AdjVertex {
+		int head;
 		int edgeLength;
 
-		AdjNode(String adjs) {
+		AdjVertex(String adjs) {
 			String[] parts = adjs.split(",");
 			if (parts.length == 2) {
-				adjVertex = Integer.valueOf(parts[0]);
+				head = Integer.valueOf(parts[0]);
 				edgeLength = Integer.valueOf(parts[1]);
 			}
 		}
