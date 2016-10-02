@@ -40,6 +40,8 @@ public class DijkstraShortestPath {
 	 * which the above ten vertices are given. The string should not contain any
 	 * spaces. Please type your answer in the space provided.
 	 * 
+	 * Answer: [2599, 2610, 2947, 2052, 2367, 2399, 2029, 2442, 2505, 3068]
+	 * 
 	 * IMPLEMENTATION NOTES: This graph is small enough that the straightforward
 	 * O(mn) time implementation of Dijkstra's algorithm should work fine.
 	 * OPTIONAL: For those of you seeking an additional challenge, try
