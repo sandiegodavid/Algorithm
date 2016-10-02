@@ -22,6 +22,8 @@ public class Median {
 	 * 10000 (i.e., only the last 4 digits). That is, you should compute
 	 * (m1+m2+m3+⋯+m10000)mod10000.
 	 * 
+	 * Answer: 1213
+	 * 
 	 * OPTIONAL EXERCISE: Compare the performance achieved by heap-based and
 	 * search-tree-based implementations of the algorithm.
 	 */
@@ -51,12 +53,14 @@ public class Median {
 		}
 		if (lower.peek() >= element) {
 			lower.add(element);
-			int highLow = lower.poll();
-			higher.add(highLow);		
+			if (lower.size() == higher.size() + 2) {
+				higher.add(lower.poll());
+			}
 		} else {
 			higher.add(element);
-			int lowHigh = higher.poll();
-			lower.add(lowHigh);
+			if (higher.size() == lower.size() + 1) {
+				lower.add(higher.poll());
+			}
 		}
 		medianTotal += lower.peek();
 	}
