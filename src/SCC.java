@@ -1,7 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,8 +49,8 @@ public class SCC {
 	 * Configurations..., then look for the applications entry in 'Java
 	 * application').
 	 * 
-	 * The arguments tab has a text box Vm arguments, enter -Xss128m (or a bigger
-	 * parameter). The default value is 512 kByte.
+	 * The arguments tab has a text box Vm arguments, enter -Xss128m (or a
+	 * bigger parameter). The default value is 512 kByte.
 	 */
 	static final int VERTICES_COUNT = 875714;// 12; for SCC-small.txt
 	static final int LARGESTS_COUNT = 5;
@@ -148,9 +149,8 @@ public class SCC {
 	}
 
 	private static void readInput() throws FileNotFoundException, IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(inputFileName))) {
-			String edge;
-			while ((edge = reader.readLine()) != null) {
+		try (BufferedReader reader = Files.newBufferedReader(Paths.get(inputFileName))) {
+			reader.lines().forEach(edge -> {
 				String th[] = edge.split("\\s");
 				if (th.length == 2) {
 					Integer tail = Integer.valueOf(th[0]);
@@ -168,7 +168,7 @@ public class SCC {
 					}
 					hv.add(tail);
 				}
-			}
+			});
 			System.out.println("read:" + g.size() + " tail vertices, " + gReverse.size() + " head vertices.");
 		}
 	}

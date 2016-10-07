@@ -1,7 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,9 +87,8 @@ public class DijkstraShortestPath {
 	}
 
 	private static void readInput() throws FileNotFoundException, IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(inputFileName))) {
-			String is;
-			while ((is = reader.readLine()) != null) {
+		try (BufferedReader reader = Files.newBufferedReader(Paths.get(inputFileName))) {
+			reader.lines().forEach(is -> {
 				String adjs[] = is.split("\\s");
 				List<AdjVertex> adjl = new ArrayList<>(adjs.length - 1);
 				int vertex = Integer.valueOf(adjs[0]);
@@ -101,7 +101,7 @@ public class DijkstraShortestPath {
 						}
 					});
 				}
-			}
+			});
 		}
 	}
 

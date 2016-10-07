@@ -1,7 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.function.BinaryOperator;
 
 public class QuickSort {
@@ -87,7 +88,7 @@ public class QuickSort {
 
 	private static void readInput() {
 		comparisonCount = 0;
-		try (FileReader r = new FileReader(inputFileName); BufferedReader br = new BufferedReader(r);) {
+		try (BufferedReader br = Files.newBufferedReader(Paths.get(inputFileName))) {
 			String is;
 			for (int i = 0; (i < ARRAY_SIZE) && ((is = br.readLine()) != null); i++) {
 				a[i] = Integer.valueOf(is);

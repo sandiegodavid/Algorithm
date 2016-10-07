@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.PriorityQueue;
 
 public class Median {
@@ -34,13 +35,12 @@ public class Median {
 	static PriorityQueue<Integer> higher = new PriorityQueue<>((x, y) -> (x - y));
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(inputFileName))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.length() > 0) {
-					doMedian(Integer.valueOf(line));
+		try (BufferedReader reader = Files.newBufferedReader(Paths.get(inputFileName))) {
+			reader.lines().forEach(l -> {
+				if (l.length() > 0) {
+					doMedian(Integer.valueOf(l));
 				}
-			}
+			});
 		}
 		System.out.println(medianTotal % 10000);
 	}

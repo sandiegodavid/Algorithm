@@ -1,7 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 class InversionCount {
 	static int ARRAY_SIZE = 100000;
@@ -14,7 +15,7 @@ class InversionCount {
 	}
 
 	private static long sortAndCount(int s, int e) {
-		//System.out.println("s:" + s + ", e:" + e);
+		// System.out.println("s:" + s + ", e:" + e);
 		if (e - s <= 1) {
 			return 0;
 		}
@@ -27,7 +28,7 @@ class InversionCount {
 
 	private static long countSplitInversion(int s, int e) {
 		long c = 0;
-		int i = 0, j = 0, n = e - s, m = (s + e) / 2;		
+		int i = 0, j = 0, n = e - s, m = (s + e) / 2;
 		int d[] = new int[n];
 		for (int k = 0; k < n; k++) {
 			int bi = s + i, cj = m + j;
@@ -57,9 +58,9 @@ class InversionCount {
 	}
 
 	private static void readInput() {
-		try (FileReader r = new FileReader(inputFileName); BufferedReader br = new BufferedReader(r);) {
+		try (BufferedReader reader = Files.newBufferedReader(Paths.get(inputFileName));) {
 			String is;
-			for (int i = 0; (i < ARRAY_SIZE) && ((is = br.readLine()) != null); i++) {
+			for (int i = 0; (i < ARRAY_SIZE) && ((is = reader.readLine()) != null); i++) {
 				a[i] = Integer.valueOf(is);
 			}
 		} catch (FileNotFoundException e) {

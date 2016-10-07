@@ -1,7 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -54,13 +55,11 @@ public class Assignment2Sum {
 	}
 
 	private static void readInput() throws FileNotFoundException, IOException {
-		try (BufferedReader reader = new BufferedReader(new FileReader(inputFileName))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				long val = Long.valueOf(line);
+		try (BufferedReader reader = Files.newBufferedReader(Paths.get(inputFileName))) {
+			reader.lines().forEach(l -> {
+				long val = Long.valueOf(l);
 				inputs.put(val, val);
-			}
+			});
 		}
 	}
-
 }
